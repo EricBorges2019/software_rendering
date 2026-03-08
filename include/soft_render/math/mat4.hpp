@@ -48,7 +48,7 @@ struct Mat4 {
 #ifdef USE_SSE4_1
         for (int i = 0; i < 4; ++i) {
             __m128 r = rows[i];
-            result.rows[0] = _mm_add_ps(_mm_add_ps(
+            result.rows[i] = _mm_add_ps(_mm_add_ps(
                 _mm_mul_ps(_mm_shuffle_ps(r, r, _MM_SHUFFLE(0,0,0,0)), b.rows[0]),
                 _mm_mul_ps(_mm_shuffle_ps(r, r, _MM_SHUFFLE(1,1,1,1)), b.rows[1])),
                 _mm_add_ps(
@@ -144,25 +144,31 @@ struct Mat4 {
     }
 
     static Mat4 lookAt(const Vec3& eye, const Vec3& target, const Vec3& up) {
+        // f = forward (into scene), r = right, u = up
+        // View matrix rows are [r, u, -f] with translation -dot(basis, eye)
         Vec3 f = (target - eye).normalized();
         Vec3 r = f.cross(up).normalized();
         Vec3 u = r.cross(f);
         return {
-            r.x, r.y, r.z, -r.dot(eye),
-            u.x, u.y, u.z, -u.dot(eye),
-            -f.x, -f.y, -f.z, f.dot(eye),
-            0, 0, 0, 1
+            r.x,  r.y,  r.z,  -r.dot(eye),
+            u.x,  u.y,  u.z,  -u.dot(eye),
+            -f.x, -f.y, -f.z,  f.dot(eye),
+            0,    0,    0,     1
         };
     }
 
     static Mat4 perspective(float fov, float aspect, float near, float far) {
         float tanHalfFov = std::tan(fov * 0.5f);
-        float range = near - far;
+        // Standard OpenGL-style right-handed perspective:
+        //   w_clip = -z_view  (positive when camera looks down -Z)
+        //   z_clip = z_view * (-(near+far)/(far-near)) + (-2*far*near)/(far-near)
+        float A = -(far + near) / (far - near);
+        float B = -2.0f * far * near / (far - near);
         return {
             1.0f / (aspect * tanHalfFov), 0, 0, 0,
             0, 1.0f / tanHalfFov, 0, 0,
-            0, 0, (-near - far) / range, 2 * far * near / range,
-            0, 0, 1, 0
+            0, 0, A, B,
+            0, 0, -1, 0
         };
     }
 

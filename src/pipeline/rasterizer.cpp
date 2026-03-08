@@ -113,9 +113,9 @@ void Rasterizer::rasterizeNDC(const Triangle& tri, const FragmentCallback& frag)
 
     float area = edgeFunction(s0, s1, s2);
     if (std::abs(area) < 1e-8f) return;
-    // Back-face cull (CCW winding = front-face)
-    if (area < 0) return;
-    float invArea = 1.0f / area;
+    // Support both CCW and CW winding (no backface cull for now)
+    bool ccw = area > 0;
+    float invArea = 1.0f / area; // keep sign
 
     for (int y = minY; y <= maxY; ++y) {
         for (int x = minX; x <= maxX; ++x) {
@@ -124,7 +124,12 @@ void Rasterizer::rasterizeNDC(const Triangle& tri, const FragmentCallback& frag)
             float e1 = edgeFunction(s2, s0, p);
             float e2 = edgeFunction(s0, s1, p);
 
-            if (e0 < 0 || e1 < 0 || e2 < 0) continue;
+            // Inside test: all same sign as area
+            if (ccw) {
+                if (e0 < 0 || e1 < 0 || e2 < 0) continue;
+            } else {
+                if (e0 > 0 || e1 > 0 || e2 > 0) continue;
+            }
 
             float b0 = e0 * invArea;
             float b1 = e1 * invArea;

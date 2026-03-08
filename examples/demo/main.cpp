@@ -27,8 +27,8 @@ int main(int argc, char** argv) {
     renderer.setCameraPos(eye);
 
     // Lights
-    renderer.addLight({ {3, 4, 3}, {1.0f, 0.95f, 0.8f}, 20.0f, 15.0f });
-    renderer.addLight({ {-3, 2, -2}, {0.3f, 0.4f, 1.0f}, 8.0f, 10.0f });
+    renderer.addLight({ {3, 4, 3},   {1.0f, 0.95f, 0.8f}, 6.0f, 10.0f });
+    renderer.addLight({ {-3, 2, -2}, {0.3f, 0.4f,  1.0f}, 2.0f,  8.0f });
 
     // Choose mesh: OBJ if provided, else sphere
     demo::Mesh mesh;
