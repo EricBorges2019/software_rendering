@@ -10,6 +10,17 @@ option(ENABLE_THREADS "Enable multithreading" ON)
 
 find_package(Threads REQUIRED)
 
+# SDL2 — optional, enables the real-time viewer
+set(SDL2_PATH "/usr/local/Cellar/sdl2/2.32.6" CACHE PATH "SDL2 install prefix")
+find_library(SDL2_LIBRARY NAMES SDL2 HINTS "${SDL2_PATH}/lib")
+find_path(SDL2_INCLUDE_DIR SDL2/SDL.h HINTS "${SDL2_PATH}/include")
+if(SDL2_LIBRARY AND SDL2_INCLUDE_DIR)
+    set(SDL2_FOUND TRUE)
+    message(STATUS "Found SDL2: ${SDL2_LIBRARY}")
+else()
+    message(STATUS "SDL2 not found — viewer will not be built")
+endif()
+
 add_library(soft_render STATIC
     src/math/vec3.cpp
     src/math/vec4.cpp
@@ -45,6 +56,18 @@ add_executable(demo
     examples/demo/obj_loader.cpp
 )
 target_link_libraries(demo PRIVATE soft_render)
+
+if(SDL2_FOUND)
+    add_executable(viewer
+        examples/viewer/main.cpp
+        examples/demo/obj_loader.cpp
+    )
+    target_include_directories(viewer PRIVATE
+        ${SDL2_INCLUDE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/examples/demo
+    )
+    target_link_libraries(viewer PRIVATE soft_render ${SDL2_LIBRARY})
+endif()
 
 if(WIN32)
     target_compile_definitions(soft_render PUBLIC NOMINMAX)

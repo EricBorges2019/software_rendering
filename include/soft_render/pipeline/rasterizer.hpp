@@ -43,8 +43,8 @@ private:
     // Clip triangle against near plane, emit 1 or 2 result triangles
     int clipNear(const Triangle& in, Triangle out[2]) const;
 
-    // Core inner-loop rasterizer for a single NDC triangle
-    void rasterizeNDC(const Triangle& tri, const FragmentCallback& frag);
+    // Core inner-loop rasterizer for a single NDC triangle, restricted to rows [tileY0, tileY1)
+    void rasterizeNDC(const Triangle& tri, const FragmentCallback& frag, int tileY0, int tileY1);
 
     // Convert clip-space vertex to screen-space
     math::Vec3 toScreen(const math::Vec4& clip) const;
