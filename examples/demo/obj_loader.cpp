@@ -1,3 +1,4 @@
+#include <array>
 #include "obj_loader.hpp"
 #include <fstream>
 #include <sstream>
@@ -38,10 +39,10 @@ bool loadOBJ(const char* path, Mesh& out) {
             texcoords.push_back(t);
         } else if (tok == "f") {
             // Parse face (triangulate n-gons via fan)
-            std::vector<std::array<int,3>> face; // pos/tex/nrm (0-indexed, -1=absent)
+            std::vector<std::array<int, 3>> face; // pos/tex/nrm (0-indexed, -1=absent)
             std::string token;
             while (ss >> token) {
-                std::array<int,3> idx = {-1, -1, -1};
+                std::array<int, 3> idx = {-1, -1, -1};
                 std::replace(token.begin(), token.end(), '/', ' ');
                 std::istringstream ts(token);
                 int v;

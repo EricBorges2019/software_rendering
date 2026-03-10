@@ -1,3 +1,4 @@
+#include <cstdint>
 #pragma once
 
 #include "soft_render/pipeline/vertex.hpp"
