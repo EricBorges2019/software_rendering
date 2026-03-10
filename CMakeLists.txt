@@ -70,8 +70,10 @@ if(SDL2_FOUND)
 endif()
 
 # Tests
+enable_testing()
 add_executable(tests tests/test_math.cpp)
 target_link_libraries(tests PRIVATE soft_render)
+add_test(NAME test_math COMMAND tests)
 
 if(WIN32)
     target_compile_definitions(soft_render PUBLIC NOMINMAX)
