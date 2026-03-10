@@ -1,5 +1,6 @@
 #include "soft_render/render/renderer.hpp"
 #include "soft_render/math/mat4.hpp"
+#include "soft_render/version.hpp"
 #include "obj_loader.hpp"
 #include <cstdio>
 #include <cmath>
@@ -12,6 +13,8 @@ using namespace sr::pipeline;
 static const float PI = 3.14159265358979f;
 
 int main(int argc, char** argv) {
+    std::printf("soft_render %s\n", SR_VERSION);
+
     const int W = 800, H = 600;
     const int FRAMES = 60;
 
