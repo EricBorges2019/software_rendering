@@ -4,6 +4,7 @@
 #include "soft_render/pipeline/vertex.hpp"
 #include <vector>
 #include <string>
+#include <cstdint>
 
 namespace demo {
 
