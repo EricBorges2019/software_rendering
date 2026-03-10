@@ -3,6 +3,7 @@
 #include <sstream>
 #include <cmath>
 #include <algorithm>
+#include <array>
 
 namespace demo {
 
@@ -103,7 +104,13 @@ Mesh makeCube() {
             m.vertices.push_back(v);
         }
         // Two triangles per quad
-        m.indices.insert(m.indices.end(), {base, base+1, base+2, base, base+2, base+3});
+        m.indices.push_back(base);
+        m.indices.push_back(base+1);
+        m.indices.push_back(base+2);
+
+        m.indices.push_back(base);
+        m.indices.push_back(base+2);
+        m.indices.push_back(base+3);
     }
     return m;
 }
@@ -133,7 +140,12 @@ Mesh makeSphere(int slices, int stacks) {
             uint32_t b = st       * (slices+1) + sl + 1;
             uint32_t c = (st + 1) * (slices+1) + sl;
             uint32_t d = (st + 1) * (slices+1) + sl + 1;
-            m.indices.insert(m.indices.end(), {a, c, b, b, c, d});
+            m.indices.push_back(a);
+            m.indices.push_back(c);
+            m.indices.push_back(b);
+            m.indices.push_back(b);
+            m.indices.push_back(c);
+            m.indices.push_back(d);
         }
     }
     return m;

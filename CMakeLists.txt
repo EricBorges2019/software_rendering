@@ -72,3 +72,13 @@ endif()
 if(WIN32)
     target_compile_definitions(soft_render PUBLIC NOMINMAX)
 endif()
+
+# Tests
+option(BUILD_TESTS "Build test suite" ON)
+if(BUILD_TESTS)
+    enable_testing()
+
+    add_executable(test_vec3 tests/test_vec3.cpp)
+    target_link_libraries(test_vec3 PRIVATE soft_render)
+    add_test(NAME test_vec3 COMMAND test_vec3)
+endif()
