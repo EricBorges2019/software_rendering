@@ -1,4 +1,5 @@
 #include "soft_render/math/vec4.hpp"
+#include "soft_render/math/mat4.hpp"
 #include <iostream>
 #include <cassert>
 #include <cmath>
@@ -51,8 +52,81 @@ void test_vec4_perspective() {
     std::cout << "test_vec4_perspective passed!" << std::endl;
 }
 
+void test_mat4_multiplication() {
+    std::cout << "Running test_mat4_multiplication..." << std::endl;
+
+    // Case 1: Identity * A = A
+    {
+        Mat4 I = Mat4::identity();
+        Mat4 A = {
+            1.0f, 2.0f, 3.0f, 4.0f,
+            5.0f, 6.0f, 7.0f, 8.0f,
+            9.0f, 10.0f, 11.0f, 12.0f,
+            13.0f, 14.0f, 15.0f, 16.0f
+        };
+        Mat4 result = I * A;
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                assert(std::abs(result(i, j) - A(i, j)) < 1e-5f);
+            }
+        }
+        std::cout << "  Identity * A passed" << std::endl;
+    }
+
+    // Case 2: A * Identity = A
+    {
+        Mat4 I = Mat4::identity();
+        Mat4 A = {
+            1.0f, 2.0f, 3.0f, 4.0f,
+            5.0f, 6.0f, 7.0f, 8.0f,
+            9.0f, 10.0f, 11.0f, 12.0f,
+            13.0f, 14.0f, 15.0f, 16.0f
+        };
+        Mat4 result = A * I;
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                assert(std::abs(result(i, j) - A(i, j)) < 1e-5f);
+            }
+        }
+        std::cout << "  A * Identity passed" << std::endl;
+    }
+
+    // Case 3: A * B
+    {
+        Mat4 A = {
+            1.0f, 2.0f, 3.0f, 4.0f,
+            5.0f, 6.0f, 7.0f, 8.0f,
+            9.0f, 10.0f, 11.0f, 12.0f,
+            13.0f, 14.0f, 15.0f, 16.0f
+        };
+        Mat4 B = {
+            1.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 2.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 3.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 4.0f
+        };
+        Mat4 result = A * B;
+
+        Mat4 expected = {
+            1.0f, 4.0f, 9.0f, 16.0f,
+            5.0f, 12.0f, 21.0f, 32.0f,
+            9.0f, 20.0f, 33.0f, 48.0f,
+            13.0f, 28.0f, 45.0f, 64.0f
+        };
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                assert(std::abs(result(i, j) - expected(i, j)) < 1e-5f);
+            }
+        }
+        std::cout << "  A * B passed" << std::endl;
+    }
+
+    std::cout << "test_mat4_multiplication passed!" << std::endl;
+}
+
 int main() {
     test_vec4_perspective();
+    test_mat4_multiplication();
     std::cout << "All tests passed!" << std::endl;
     return 0;
 }
