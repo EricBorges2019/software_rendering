@@ -32,8 +32,6 @@ jobs:
       - name: Run test_math
         run: ./build/tests
 
-      - name: List build artifacts
-        run: find build -maxdepth 2 -type f -executable | sort
-
       - name: Smoke test demo
         run: ./build/demo
+        working-directory: build
