@@ -18,7 +18,7 @@ static const float PI = 3.14159265358979f;
 // ---------------------------------------------------------------------------
 // Tiny 5x7 bitmap font for the HUD overlay
 // Each char is 5 columns of 7 bits (LSB = top row).
-// Only ASCII 32-127 are stored; index = ch - 32.
+// Only ASCII 32-126 are stored; index = ch - 32.
 // ---------------------------------------------------------------------------
 static const uint8_t FONT5x7[][5] = {
     {0x00,0x00,0x00,0x00,0x00}, // ' '
@@ -116,7 +116,6 @@ static const uint8_t FONT5x7[][5] = {
     {0x00,0x00,0x7F,0x00,0x00}, // '|'
     {0x00,0x41,0x36,0x08,0x00}, // '}'
     {0x08,0x08,0x2A,0x1C,0x08}, // '~'
-    {0x08,0x1C,0x2A,0x08,0x08}, // DEL (unused)
 };
 
 // Draw a single character at pixel (px, py). Scale = pixel size of each font pixel.

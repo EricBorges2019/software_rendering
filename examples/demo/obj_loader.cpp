@@ -1,3 +1,4 @@
+#include <array>
 #include "obj_loader.hpp"
 #include <fstream>
 #include <sstream>
@@ -39,10 +40,10 @@ bool loadOBJ(const char* path, Mesh& out) {
             texcoords.push_back(t);
         } else if (tok == "f") {
             // Parse face (triangulate n-gons via fan)
-            std::vector<std::array<int,3>> face; // pos/tex/nrm (0-indexed, -1=absent)
+            std::vector<std::array<int, 3>> face; // pos/tex/nrm (0-indexed, -1=absent)
             std::string token;
             while (ss >> token) {
-                std::array<int,3> idx = {-1, -1, -1};
+                std::array<int, 3> idx = {-1, -1, -1};
                 std::replace(token.begin(), token.end(), '/', ' ');
                 std::istringstream ts(token);
                 int v;
@@ -104,7 +105,13 @@ Mesh makeCube() {
             m.vertices.push_back(v);
         }
         // Two triangles per quad
-        m.indices.insert(m.indices.end(), {base, base+1, base+2, base, base+2, base+3});
+        m.indices.push_back(base);
+        m.indices.push_back(base+1);
+        m.indices.push_back(base+2);
+
+        m.indices.push_back(base);
+        m.indices.push_back(base+2);
+        m.indices.push_back(base+3);
     }
     return m;
 }
@@ -134,7 +141,12 @@ Mesh makeSphere(int slices, int stacks) {
             uint32_t b = st       * (slices+1) + sl + 1;
             uint32_t c = (st + 1) * (slices+1) + sl;
             uint32_t d = (st + 1) * (slices+1) + sl + 1;
-            m.indices.insert(m.indices.end(), {a, c, b, b, c, d});
+            m.indices.push_back(a);
+            m.indices.push_back(c);
+            m.indices.push_back(b);
+            m.indices.push_back(b);
+            m.indices.push_back(c);
+            m.indices.push_back(d);
         }
     }
     return m;
