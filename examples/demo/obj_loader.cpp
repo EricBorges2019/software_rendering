@@ -76,45 +76,6 @@ bool loadOBJ(const char* path, Mesh& out) {
 // ----------------------------------------------------------------
 // Procedural meshes
 // ----------------------------------------------------------------
-Mesh makeCube() {
-    // 8 unique verts, 12 triangles (6 faces × 2 tri)
-    static const float P[8][3] = {
-        {-1,-1,-1}, { 1,-1,-1}, { 1, 1,-1}, {-1, 1,-1},
-        {-1,-1, 1}, { 1,-1, 1}, { 1, 1, 1}, {-1, 1, 1}
-    };
-    static const int F[6][4] = {
-        {0,1,2,3}, {5,4,7,6}, {4,0,3,7},
-        {1,5,6,2}, {3,2,6,7}, {4,5,1,0}
-    };
-    static const float N[6][3] = {
-        { 0, 0,-1}, { 0, 0, 1}, {-1, 0, 0},
-        { 1, 0, 0}, { 0, 1, 0}, { 0,-1, 0}
-    };
-    static const float UV[4][2] = {{0,0},{1,0},{1,1},{0,1}};
-
-    Mesh m;
-    for (int f = 0; f < 6; ++f) {
-        uint32_t base = (uint32_t)m.vertices.size();
-        for (int k = 0; k < 4; ++k) {
-            Vertex v;
-            const float* p = P[F[f][k]];
-            v.position = {p[0], p[1], p[2]};
-            v.normal   = {N[f][0], N[f][1], N[f][2]};
-            v.uv       = {UV[k][0], UV[k][1]};
-            v.color    = {1, 1, 1};
-            m.vertices.push_back(v);
-        }
-        // Two triangles per quad
-        m.indices.push_back(base);
-        m.indices.push_back(base+1);
-        m.indices.push_back(base+2);
-
-        m.indices.push_back(base);
-        m.indices.push_back(base+2);
-        m.indices.push_back(base+3);
-    }
-    return m;
-}
 
 Mesh makeSphere(int slices, int stacks) {
     Mesh m;

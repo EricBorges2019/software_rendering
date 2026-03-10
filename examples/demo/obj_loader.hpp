@@ -16,9 +16,6 @@ struct Mesh {
 // Load a Wavefront OBJ file (triangulated, no MTL)
 bool loadOBJ(const char* path, Mesh& out);
 
-// Generate a unit cube mesh
-Mesh makeCube();
-
 // Generate a UV sphere
 Mesh makeSphere(int slices = 32, int stacks = 16);
 
