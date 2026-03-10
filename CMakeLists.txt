@@ -1,9 +1,39 @@
 cmake_minimum_required(VERSION 3.20)
-project(soft_render VERSION 1.0.0 LANGUAGES CXX)
+project(soft_render LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Version from git tags (e.g. 0.0.2-17-g9f8a5e9 → 0.0.2)
+execute_process(
+    COMMAND git describe --tags --always
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE SR_VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+)
+if(NOT SR_VERSION)
+    set(SR_VERSION "0.0.0-unknown")
+endif()
+
+string(REGEX MATCH "^([0-9]+)\\.([0-9]+)\\.([0-9]+)" _ver_match "${SR_VERSION}")
+if(_ver_match)
+    set(SR_VERSION_MAJOR ${CMAKE_MATCH_1})
+    set(SR_VERSION_MINOR ${CMAKE_MATCH_2})
+    set(SR_VERSION_PATCH ${CMAKE_MATCH_3})
+else()
+    set(SR_VERSION_MAJOR 0)
+    set(SR_VERSION_MINOR 0)
+    set(SR_VERSION_PATCH 0)
+endif()
+
+message(STATUS "soft_render version: ${SR_VERSION}")
+
+configure_file(
+    ${CMAKE_SOURCE_DIR}/include/soft_render/version.hpp.in
+    ${CMAKE_BINARY_DIR}/generated/soft_render/version.hpp
+)
 
 option(ENABLE_SIMD "Enable SIMD optimizations" ON)
 option(ENABLE_THREADS "Enable multithreading" ON)
@@ -35,6 +65,7 @@ add_library(soft_render STATIC
 
 target_include_directories(soft_render PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/generated
 )
 
 if(ENABLE_SIMD)
