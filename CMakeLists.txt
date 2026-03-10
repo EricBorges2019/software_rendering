@@ -128,4 +128,16 @@ if(BUILD_TESTS)
     add_executable(tests tests/test_math.cpp)
     target_link_libraries(tests PRIVATE soft_render)
     add_test(NAME test_math COMMAND tests)
+
+    add_executable(test_math_invariants tests/test_math_invariants.cpp)
+    target_link_libraries(test_math_invariants PRIVATE soft_render)
+    add_test(NAME test_math_invariants COMMAND test_math_invariants)
+
+    add_executable(test_rasterizer tests/test_rasterizer.cpp)
+    target_link_libraries(test_rasterizer PRIVATE soft_render)
+    add_test(NAME test_rasterizer COMMAND test_rasterizer)
+
+    add_executable(test_pipeline_integration tests/test_pipeline_integration.cpp)
+    target_link_libraries(test_pipeline_integration PRIVATE soft_render)
+    add_test(NAME test_pipeline_integration COMMAND test_pipeline_integration)
 endif()
