@@ -16,11 +16,10 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
-#include <cstdint>
-#include <limits>
 #include <set>
 #include <algorithm>
 
+#include "test_helpers.hpp"
 #include "soft_render/core/framebuffer.hpp"
 #include "soft_render/pipeline/rasterizer.hpp"
 #include "soft_render/pipeline/vertex.hpp"
@@ -31,8 +30,7 @@ using namespace sr;
 using namespace sr::math;
 using namespace sr::core;
 using namespace sr::pipeline;
-
-static const float EPS = 1e-4f;
+using namespace sr_test;
 
 // Helper: create a ClipVertex in NDC space (x,y in [-1,1], z in [-1,1], w=1)
 static ClipVertex makeNDCVertex(float ndcX, float ndcY, float ndcZ,
@@ -46,26 +44,6 @@ static ClipVertex makeNDCVertex(float ndcX, float ndcY, float ndcZ,
     cv.color = color;
     cv.uv = uv;
     return cv;
-}
-
-// Helper: count non-black pixels in framebuffer
-static int countNonBlack(const Framebuffer& fb) {
-    int count = 0;
-    const Pixel* px = fb.pixels();
-    for (int i = 0; i < fb.width() * fb.height(); ++i)
-        if (px[i].r > 0 || px[i].g > 0 || px[i].b > 0) ++count;
-    return count;
-}
-
-// Helper: get pixel color at (x, y)
-static Pixel getPixel(const Framebuffer& fb, int x, int y) {
-    return fb.pixels()[y * fb.width() + x];
-}
-
-// Helper: check if pixel is non-black
-static bool isLit(const Framebuffer& fb, int x, int y) {
-    Pixel p = getPixel(fb, x, y);
-    return p.r > 0 || p.g > 0 || p.b > 0;
 }
 
 // =============================================================================

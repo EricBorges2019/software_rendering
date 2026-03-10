@@ -10,10 +10,9 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
-#include <cstdint>
-#include <limits>
 #include <vector>
 
+#include "test_helpers.hpp"
 #include "soft_render/math/vec2.hpp"
 #include "soft_render/math/vec3.hpp"
 #include "soft_render/math/vec4.hpp"
@@ -31,29 +30,7 @@ using namespace sr::math;
 using namespace sr::core;
 using namespace sr::pipeline;
 using namespace sr::render;
-
-static const float PI = 3.14159265358979f;
-static const float EPS = 1e-4f;
-
-static bool approx(float a, float b, float eps = EPS) { return std::abs(a - b) < eps; }
-
-// Helper: count non-black pixels
-static int countNonBlack(const Framebuffer& fb) {
-    int count = 0;
-    const Pixel* px = fb.pixels();
-    for (int i = 0; i < fb.width() * fb.height(); ++i)
-        if (px[i].r > 0 || px[i].g > 0 || px[i].b > 0) ++count;
-    return count;
-}
-
-static Pixel getPixel(const Framebuffer& fb, int x, int y) {
-    return fb.pixels()[y * fb.width() + x];
-}
-
-static bool isLit(const Framebuffer& fb, int x, int y) {
-    Pixel p = getPixel(fb, x, y);
-    return p.r > 0 || p.g > 0 || p.b > 0;
-}
+using namespace sr_test;
 
 // =============================================================================
 // Vertex Processor Tests
@@ -136,15 +113,15 @@ void test_vp_batch_matches_single() {
     vp.processBatch(verts, batch, N, u);
 
     for (int i = 0; i < N; ++i) {
-        assert(approx(singles[i].clipPos.x, batch[i].clipPos.x, 0.01f) &&
+        assert(approx(singles[i].clipPos.x, batch[i].clipPos.x, EPS_LOOSE) &&
                "batch clipPos.x must match single");
-        assert(approx(singles[i].clipPos.y, batch[i].clipPos.y, 0.01f) &&
+        assert(approx(singles[i].clipPos.y, batch[i].clipPos.y, EPS_LOOSE) &&
                "batch clipPos.y must match single");
-        assert(approx(singles[i].clipPos.z, batch[i].clipPos.z, 0.01f) &&
+        assert(approx(singles[i].clipPos.z, batch[i].clipPos.z, EPS_LOOSE) &&
                "batch clipPos.z must match single");
-        assert(approx(singles[i].clipPos.w, batch[i].clipPos.w, 0.01f) &&
+        assert(approx(singles[i].clipPos.w, batch[i].clipPos.w, EPS_LOOSE) &&
                "batch clipPos.w must match single");
-        assert(approx(singles[i].worldPos.x, batch[i].worldPos.x, 0.01f) &&
+        assert(approx(singles[i].worldPos.x, batch[i].worldPos.x, EPS_LOOSE) &&
                "batch worldPos must match single");
     }
 
@@ -168,7 +145,7 @@ void test_vp_rotation_preserves_distance() {
     float origDist = v.position.length();
     float worldDist = cv.worldPos.length();
 
-    assert(approx(origDist, worldDist, 0.01f) && "rotation must preserve distance from origin");
+    assert(approx(origDist, worldDist, EPS_LOOSE) && "rotation must preserve distance from origin");
     std::cout << "  VP rotation preserves distance: PASS" << std::endl;
 }
 
@@ -190,9 +167,9 @@ void test_fs_unlit_returns_albedo() {
 
     Color result = cb(frag);
     // Unlit should return albedo * frag.color, clamped
-    assert(approx(result.x, 0.5f, 0.02f) && "unlit red must match albedo");
-    assert(approx(result.y, 0.3f, 0.02f) && "unlit green must match albedo");
-    assert(approx(result.z, 0.8f, 0.02f) && "unlit blue must match albedo");
+    assert(approx(result.x, 0.5f, EPS_LOOSE) && "unlit red must match albedo");
+    assert(approx(result.y, 0.3f, EPS_LOOSE) && "unlit green must match albedo");
+    assert(approx(result.z, 0.8f, EPS_LOOSE) && "unlit blue must match albedo");
 
     std::cout << "  FS unlit returns albedo: PASS" << std::endl;
 }
@@ -390,8 +367,8 @@ void test_texture_wrap() {
     for (float u = 0; u < 1.0f; u += 0.1f) {
         Color c0 = tex.sample(u, 0.3f);
         Color c1 = tex.sample(u + 1.0f, 0.3f);
-        assert(approx(c0.x, c1.x, 0.01f) && "texture must wrap in U");
-        assert(approx(c0.y, c1.y, 0.01f) && "texture must wrap in U");
+        assert(approx(c0.x, c1.x, EPS_LOOSE) && "texture must wrap in U");
+        assert(approx(c0.y, c1.y, EPS_LOOSE) && "texture must wrap in U");
     }
     std::cout << "  texture UV wrapping: PASS" << std::endl;
 }
