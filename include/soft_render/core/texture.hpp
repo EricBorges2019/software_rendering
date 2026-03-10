@@ -34,8 +34,8 @@ public:
         if (width_ == 0 || height_ == 0) return {1, 1, 1};
 
         // Wrap
-        u = u - std::floor(u);
-        v = v - std::floor(v);
+        int iu = static_cast<int>(u); u = u - static_cast<float>(iu - (iu > u));
+        int iv = static_cast<int>(v); v = v - static_cast<float>(iv - (iv > v));
 
         float fx = u * (width_ - 1);
         float fy = v * (height_ - 1);
@@ -58,8 +58,8 @@ public:
     // Nearest-neighbor (faster)
     math::Color sampleNearest(float u, float v) const {
         if (width_ == 0 || height_ == 0) return {1, 1, 1};
-        u = u - std::floor(u);
-        v = v - std::floor(v);
+        int iu = static_cast<int>(u); u = u - static_cast<float>(iu - (iu > u));
+        int iv = static_cast<int>(v); v = v - static_cast<float>(iv - (iv > v));
         int x = static_cast<int>(u * width_) % width_;
         int y = static_cast<int>(v * height_) % height_;
         return fetch(x, y);
