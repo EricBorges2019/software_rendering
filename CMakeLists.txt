@@ -57,6 +57,11 @@ add_executable(demo
 )
 target_link_libraries(demo PRIVATE soft_render)
 
+add_executable(benchmark_shader
+    examples/benchmark_shader.cpp
+)
+target_link_libraries(benchmark_shader PRIVATE soft_render)
+
 if(SDL2_FOUND)
     add_executable(viewer
         examples/viewer/main.cpp

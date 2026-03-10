@@ -1,9 +1,9 @@
-#include <cstdint>
 #pragma once
 
 #include "soft_render/pipeline/vertex.hpp"
 #include <vector>
 #include <string>
+#include <array>
 #include <cstdint>
 
 namespace demo {
