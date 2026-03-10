@@ -4,10 +4,12 @@
 #include <cassert>
 #include <cmath>
 
+using std::cout;
+using std::endl;
 using namespace sr::math;
 
 void test_vec4_perspective() {
-    std::cout << "Running test_vec4_perspective..." << std::endl;
+    cout << "Running test_vec4_perspective..." << endl;
 
     // Case 1: w = 1.0 (Identity)
     {
@@ -16,7 +18,7 @@ void test_vec4_perspective() {
         assert(p.x == 1.0f);
         assert(p.y == 2.0f);
         assert(p.z == 3.0f);
-        std::cout << "  w=1.0 passed" << std::endl;
+        cout << "  w=1.0 passed" << endl;
     }
 
     // Case 2: w = 2.0 (Divide by 2)
@@ -26,7 +28,7 @@ void test_vec4_perspective() {
         assert(p.x == 0.5f);
         assert(p.y == 1.0f);
         assert(p.z == 2.0f);
-        std::cout << "  w=2.0 passed" << std::endl;
+        cout << "  w=2.0 passed" << endl;
     }
 
     // Case 3: w = -1.0 (Negative w)
@@ -36,7 +38,7 @@ void test_vec4_perspective() {
         assert(p.x == -1.0f);
         assert(p.y == 2.0f);
         assert(p.z == -3.0f);
-        std::cout << "  w=-1.0 passed" << std::endl;
+        cout << "  w=-1.0 passed" << endl;
     }
 
     // Case 4: w = 0.0 (Division by zero - should result in inf/nan)
@@ -46,14 +48,14 @@ void test_vec4_perspective() {
         assert(std::isinf(p.x) || std::isnan(p.x));
         assert(std::isinf(p.y) || std::isnan(p.y));
         assert(std::isinf(p.z) || std::isnan(p.z));
-        std::cout << "  w=0.0 passed (inf/nan handled)" << std::endl;
+        cout << "  w=0.0 passed (inf/nan handled)" << endl;
     }
 
-    std::cout << "test_vec4_perspective passed!" << std::endl;
+    cout << "test_vec4_perspective passed!" << endl;
 }
 
 void test_mat4_multiplication() {
-    std::cout << "Running test_mat4_multiplication..." << std::endl;
+    cout << "Running test_mat4_multiplication..." << endl;
 
     // Case 1: Identity * A = A
     {
@@ -70,7 +72,7 @@ void test_mat4_multiplication() {
                 assert(std::abs(result(i, j) - A(i, j)) < 1e-5f);
             }
         }
-        std::cout << "  Identity * A passed" << std::endl;
+        cout << "  Identity * A passed" << endl;
     }
 
     // Case 2: A * Identity = A
@@ -88,7 +90,7 @@ void test_mat4_multiplication() {
                 assert(std::abs(result(i, j) - A(i, j)) < 1e-5f);
             }
         }
-        std::cout << "  A * Identity passed" << std::endl;
+        cout << "  A * Identity passed" << endl;
     }
 
     // Case 3: A * B
@@ -118,15 +120,15 @@ void test_mat4_multiplication() {
                 assert(std::abs(result(i, j) - expected(i, j)) < 1e-5f);
             }
         }
-        std::cout << "  A * B passed" << std::endl;
+        cout << "  A * B passed" << endl;
     }
 
-    std::cout << "test_mat4_multiplication passed!" << std::endl;
+    cout << "test_mat4_multiplication passed!" << endl;
 }
 
 int main() {
     test_vec4_perspective();
     test_mat4_multiplication();
-    std::cout << "All tests passed!" << std::endl;
+    cout << "All tests passed!" << endl;
     return 0;
 }
