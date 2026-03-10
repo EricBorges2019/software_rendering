@@ -32,8 +32,16 @@ jobs:
       - name: Run test_math
         run: ./build/tests
 
-      - name: List build artifacts
-        run: find build -maxdepth 2 -type f -executable | sort
+      - name: Debug build artifacts
+        run: |
+          echo "=== pwd ==="
+          pwd
+          echo "=== ls -la build/ ==="
+          ls -la build/
+          echo "=== file build/demo ==="
+          file build/demo
+          echo "=== ldd build/demo ==="
+          ldd build/demo
 
       - name: Smoke test demo
         run: ./build/demo
