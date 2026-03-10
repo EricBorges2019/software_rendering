@@ -124,17 +124,19 @@ static void drawChar(core::Framebuffer& fb, int px, int py, char ch, int scale,
 {
     if (ch < 32 || ch > 126) return;
     const uint8_t* col = FONT5x7[ch - 32];
-    for (int cx = 0; cx < 5; ++cx) {
-        uint8_t bits = col[cx];
-        for (int cy = 0; cy < 7; ++cy) {
-            if (bits & (1 << cy)) {
-                for (int sy = 0; sy < scale; ++sy)
-                    for (int sx = 0; sx < scale; ++sx) {
-                        int x = px + cx * scale + sx;
-                        int y = py + cy * scale + sy;
-                        if (x >= 0 && x < fb.width() && y >= 0 && y < fb.height())
-                            fb.setPixel(x, y, {r/255.f, g/255.f, b/255.f});
-                    }
+    sr::math::Color color{r / 255.f, g / 255.f, b / 255.f};
+
+    int endX = std::min(px + 5 * scale, fb.width());
+    int endY = std::min(py + 7 * scale, fb.height());
+    int startX = std::max(px, 0);
+    int startY = std::max(py, 0);
+
+    for (int y = startY; y < endY; ++y) {
+        int cy = (y - py) / scale;
+        for (int x = startX; x < endX; ++x) {
+            int cx = (x - px) / scale;
+            if (col[cx] & (1 << cy)) {
+                fb.setPixel(x, y, color);
             }
         }
     }
