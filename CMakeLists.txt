@@ -74,15 +74,10 @@ if(SDL2_FOUND)
     target_link_libraries(viewer PRIVATE soft_render ${SDL2_LIBRARY})
 endif()
 
-# Tests
-add_executable(tests tests/test_math.cpp)
-target_link_libraries(tests PRIVATE soft_render)
-
 if(WIN32)
     target_compile_definitions(soft_render PUBLIC NOMINMAX)
 endif()
 
-# Tests
 option(BUILD_TESTS "Build test suite" ON)
 if(BUILD_TESTS)
     enable_testing()
@@ -90,4 +85,8 @@ if(BUILD_TESTS)
     add_executable(test_vec3 tests/test_vec3.cpp)
     target_link_libraries(test_vec3 PRIVATE soft_render)
     add_test(NAME test_vec3 COMMAND test_vec3)
+
+    add_executable(tests tests/test_math.cpp)
+    target_link_libraries(tests PRIVATE soft_render)
+    add_test(NAME test_math COMMAND tests)
 endif()
