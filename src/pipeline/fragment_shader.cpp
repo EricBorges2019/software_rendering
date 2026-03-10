@@ -39,7 +39,7 @@ math::Color FragmentShader::shade(const Fragment& frag,
         math::Vec3 H = (L + V).normalized();
         float NdotH = maxf(0.f, N.dot(H));
         float spec = std::pow(NdotH, mat.shininess);
-        math::Color specular = math::Color(1, 1, 1) * (spec * mat.specular);
+        math::Color specular(spec * mat.specular);
 
         result += (diffuse + specular) * lightColor;
     }
