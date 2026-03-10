@@ -34,4 +34,3 @@ jobs:
 
       - name: Smoke test demo
         run: ./build/demo
-        working-directory: build
