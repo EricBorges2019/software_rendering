@@ -6,18 +6,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Version from git tags (e.g. 0.0.2-17-g9f8a5e9 → 0.0.2)
-execute_process(
-    COMMAND git describe --tags --always
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE SR_VERSION
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    ERROR_QUIET
-)
+find_package(Git QUIET)
+if(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
+    execute_process(
+        COMMAND ${GIT_EXECUTABLE} describe --tags --always
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE SR_VERSION
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        ERROR_QUIET
+    )
+endif()
 if(NOT SR_VERSION)
     set(SR_VERSION "0.0.0-unknown")
 endif()
 
-string(REGEX MATCH "^([0-9]+)\\.([0-9]+)\\.([0-9]+)" _ver_match "${SR_VERSION}")
+string(REGEX MATCH "^v?([0-9]+)\\.([0-9]+)\\.([0-9]+)" _ver_match "${SR_VERSION}")
 if(_ver_match)
     set(SR_VERSION_MAJOR ${CMAKE_MATCH_1})
     set(SR_VERSION_MINOR ${CMAKE_MATCH_2})
