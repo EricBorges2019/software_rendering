@@ -2,6 +2,8 @@
 #include <iostream>
 #include "soft_render/math/vec3.hpp"
 
+using std::cout;
+using std::endl;
 using namespace sr::math;
 
 void test_vec3_cross() {
@@ -34,7 +36,7 @@ void test_vec3_cross() {
     Vec3 a_cross_b = a.cross(b);
     assert(a_cross_b.x == -3 && a_cross_b.y == 6 && a_cross_b.z == -3);
 
-    std::cout << "All Vec3 cross tests passed!" << std::endl;
+    cout << "All Vec3 cross tests passed!" << endl;
 }
 
 int main() {

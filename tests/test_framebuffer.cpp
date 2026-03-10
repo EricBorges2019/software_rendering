@@ -4,11 +4,13 @@
 #include "soft_render/core/framebuffer.hpp"
 #include "soft_render/math/vec3.hpp"
 
+using std::cout;
+using std::endl;
 using namespace sr::core;
 using namespace sr::math;
 
 void test_framebuffer_clear() {
-    std::cout << "Running test_framebuffer_clear..." << std::endl;
+    cout << "Running test_framebuffer_clear..." << endl;
 
     int width = 10;
     int height = 10;
@@ -26,7 +28,7 @@ void test_framebuffer_clear() {
         assert(pixels[i].a == 255);
         assert(depth[i] == std::numeric_limits<float>::infinity());
     }
-    std::cout << "  Default clear passed" << std::endl;
+    cout << "  Default clear passed" << endl;
 
     // Test clear with custom color
     Color customColor(1.0f, 0.5f, 0.25f);
@@ -39,7 +41,7 @@ void test_framebuffer_clear() {
         assert(pixels[i].a == 255);
         assert(depth[i] == std::numeric_limits<float>::infinity());
     }
-    std::cout << "  Custom color clear passed" << std::endl;
+    cout << "  Custom color clear passed" << endl;
 
     // Test clear with out-of-bounds color values
     Color outOfBoundsColor(1.5f, -0.5f, 2.0f);
@@ -52,20 +54,20 @@ void test_framebuffer_clear() {
         assert(pixels[i].a == 255);
         assert(depth[i] == std::numeric_limits<float>::infinity());
     }
-    std::cout << "  Out-of-bounds color clear passed" << std::endl;
+    cout << "  Out-of-bounds color clear passed" << endl;
 
     // Test depth test modifying depth, then clear
     fb.depthTest(0, 0, 0.5f);
     assert(fb.getDepth(0, 0) == 0.5f);
     fb.clear();
     assert(fb.getDepth(0, 0) == std::numeric_limits<float>::infinity());
-    std::cout << "  Depth buffer reset passed" << std::endl;
+    cout << "  Depth buffer reset passed" << endl;
 
-    std::cout << "test_framebuffer_clear passed!" << std::endl;
+    cout << "test_framebuffer_clear passed!" << endl;
 }
 
 int main() {
     test_framebuffer_clear();
-    std::cout << "All tests passed!" << std::endl;
+    cout << "All tests passed!" << endl;
     return 0;
 }
