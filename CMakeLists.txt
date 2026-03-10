@@ -82,6 +82,11 @@ option(BUILD_TESTS "Build test suite" ON)
 if(BUILD_TESTS)
     enable_testing()
 
+
+    add_executable(test_framebuffer tests/test_framebuffer.cpp)
+    target_link_libraries(test_framebuffer PRIVATE soft_render)
+    add_test(NAME test_framebuffer COMMAND test_framebuffer)
+
     add_executable(test_vec3 tests/test_vec3.cpp)
     target_link_libraries(test_vec3 PRIVATE soft_render)
     add_test(NAME test_vec3 COMMAND test_vec3)
