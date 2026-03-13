@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd /Users/ericborges/gt/soft_render/mayor/rig && cmake --build build --parallel 2>&1 | tail -3 && ctest --test-dir build --output-on-failure 2>&1"
+          }
+        ]
+      }
+    ]
+  }
+}

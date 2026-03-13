@@ -1,7 +1,7 @@
 {
-  "database": "dolt",
   "backend": "dolt",
+  "database": "dolt",
+  "dolt_database": "soft_render",
   "dolt_mode": "server",
-  "dolt_database": "rig",
   "project_id": "4fbe698c-efdc-40c4-b3b2-610c214bd5d6"
 }
