@@ -55,6 +55,8 @@ private:
     pipeline::FragmentShader fs_;
     pipeline::Uniforms uniforms_;
     pipeline::SceneLighting lighting_;
+    std::vector<pipeline::ClipVertex> transformedBuffer_;
+    std::vector<pipeline::Triangle> triangleBuffer_;
 };
 
 }
