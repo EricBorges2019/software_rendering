@@ -58,16 +58,16 @@ void Renderer::drawMesh(const pipeline::Vertex* verts, int vCount,
                          const uint32_t* indices, int iCount,
                          const pipeline::Material& mat) {
     // Transform all vertices
-    std::vector<pipeline::ClipVertex> transformed(vCount);
-    vp_.processBatch(verts, transformed.data(), vCount, uniforms_);
+    transformedBuffer_.resize(vCount);
+    vp_.processBatch(verts, transformedBuffer_.data(), vCount, uniforms_);
 
     // Build triangle list
     int triCount = iCount / 3;
-    std::vector<pipeline::Triangle> tris(triCount);
+    triangleBuffer_.resize(triCount);
     for (int i = 0; i < triCount; ++i) {
-        tris[i].v[0] = transformed[indices[i*3 + 0]];
-        tris[i].v[1] = transformed[indices[i*3 + 1]];
-        tris[i].v[2] = transformed[indices[i*3 + 2]];
+        triangleBuffer_[i].v[0] = transformedBuffer_[indices[i*3 + 0]];
+        triangleBuffer_[i].v[1] = transformedBuffer_[indices[i*3 + 1]];
+        triangleBuffer_[i].v[2] = transformedBuffer_[indices[i*3 + 2]];
     }
 
     // Fragment shader
@@ -76,7 +76,7 @@ void Renderer::drawMesh(const pipeline::Vertex* verts, int vCount,
 
     // Rasterize
     pipeline::Rasterizer rast(fb_);
-    rast.rasterizeBatch(tris.data(), triCount, fragCb);
+    rast.rasterizeBatch(triangleBuffer_.data(), triCount, fragCb);
 }
 
 void Renderer::draw(const DrawCall& call) {
